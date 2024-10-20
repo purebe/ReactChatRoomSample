@@ -53,7 +53,11 @@ export function ChatRoom({roomName}) {
       if (pData.command === 'S_SEND_MESSAGE') {
         setChatHistory((prevChatHistory) => [
           ...prevChatHistory,
-          pData.data
+          {
+            timestamp: new Date().toLocaleTimeString('en-US'),
+            username: pData.data.username,
+            message: pData.data.message
+          }
         ]);
       } else if (pData.command === 'S_SET_USERNAME') {
         setUsername(pData.data);
@@ -95,8 +99,24 @@ export function ChatRoom({roomName}) {
           textAlign: 'left',
           flex: 2}}>
           {chatHistory.map((c, index) => (
-            <p key={index}>
-              {c}
+            <p key={index} style={{
+            }}>
+              <span style={{
+                color: 'red',
+                fontStyle: 'italic',
+                paddingRight: '0.5rem'
+              }}>
+                {c.timestamp}
+              </span>
+              <span style={{
+                fontWeight: 'bold',
+                paddingRight: '0.5rem'
+              }}>
+                {c.username}:
+              </span>
+              <span>
+                {c.message}
+              </span>
             </p>
           ))}
         </div>
