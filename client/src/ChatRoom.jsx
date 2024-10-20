@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { UserList } from './UserList';
 
 export function ChatRoom({roomName}) {
   const [socket, setSocket] = useState(null);
@@ -83,17 +84,23 @@ export function ChatRoom({roomName}) {
         <button onClick={connect} disabled={connectDisable}>Connect</button>
       </div>
       <div style={{
-        background: 'rgba(255, 255, 255, 0.04)',
-        margin: '1rem 0',
-        padding: '0 1rem',
-        overflowY: 'scroll',
-        textAlign: 'left',
-        flex: 2}}>
-        {chatHistory.map((c, index) => (
-          <p key={index}>
-            {c}
-          </p>
-        ))}
+        display: 'flex',
+        flex: 2
+      }}>
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.04)',
+          margin: '1rem 0',
+          padding: '0 1rem',
+          overflowY: 'scroll',
+          textAlign: 'left',
+          flex: 2}}>
+          {chatHistory.map((c, index) => (
+            <p key={index}>
+              {c}
+            </p>
+          ))}
+        </div>
+        <UserList socket={socket} />
       </div>
       <div style={{
         display: 'flex',

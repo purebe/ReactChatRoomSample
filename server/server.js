@@ -18,6 +18,10 @@ const setUsername = (sid, data) => {
 		command: 'S_SET_USERNAME',
 		data: conn.username
 	}));
+	// Refresh the user list of all users
+	for (let [socketId, conn] of sockets) {
+		sendUsers(socketId);
+	}
 };
 
 const sendMessage = (sid, data) => {
@@ -28,6 +32,18 @@ const sendMessage = (sid, data) => {
 			data: `${sconn.username}: ${data.data}`
 		}));
 	}
+};
+
+const sendUsers = (sid) => {
+	const users = [];
+	const sconn = sockets.get(sid);
+	for (let [socketId, conn] of sockets) {
+		users.push(conn.username);
+	}
+	sconn.socket.send(JSON.stringify({
+		command: 'S_USER_LIST',
+		data: users
+	}));
 };
 
 wss.on('connection', function connection(ws) {
@@ -49,6 +65,9 @@ wss.on('connection', function connection(ws) {
 				break;
 			case 'SEND_MESSAGE':
 				sendMessage(sid, pData);
+				break;
+			case 'USER_LIST':
+				sendUsers(sid);
 				break;
 		}
 	});
