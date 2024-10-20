@@ -74,5 +74,11 @@ wss.on('connection', function connection(ws) {
 
 	ws.on('close', function() {
 		console.log(`${sid} - connection was closed.`);
+		sockets.delete(sid);
+		// Refresh everyones user list
+		for (let [socketId, conn] of sockets) {
+			sendUsers(socketId);
+		}
+
 	});
 });
