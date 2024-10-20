@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { UserList } from './UserList';
 
 export function ChatRoom({roomName}) {
@@ -6,6 +6,7 @@ export function ChatRoom({roomName}) {
   const [username, setUsername] = useState('');
   const [text, setText] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
+  const sendInputRef = useRef(null);
 
   const onKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -41,6 +42,7 @@ export function ChatRoom({roomName}) {
         command: 'SET_USERNAME',
         data: username
       }));
+      sendInputRef.current.focus();
     });
 
     ws.addEventListener('close', (event) => {
@@ -126,6 +128,7 @@ export function ChatRoom({roomName}) {
         display: 'flex',
         margin: '0 1rem 1rem 1rem'}}>
         <input
+          ref={sendInputRef}
           style={{
             flex: 2
           }}
