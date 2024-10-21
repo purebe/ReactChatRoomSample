@@ -29,7 +29,10 @@ const sendMessage = (sid, data) => {
 	for (let [socketId, conn] of sockets) {
 		conn.socket.send(JSON.stringify({
 			command: 'S_SEND_MESSAGE',
-			data: `${sconn.username}: ${data.data}`
+			data: {
+				username: sconn.username,
+				message: data.data
+			}
 		}));
 	}
 };
